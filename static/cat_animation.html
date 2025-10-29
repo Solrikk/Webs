@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анимация кошки</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
+        body {
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            opacity: 1;
+            background-image: linear-gradient(#e0e0e0 0.1px, transparent 1px), linear-gradient(to right, #e0e0e0 0.1px, transparent 1px);
+            background-size: 30px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .wrapper {
+            height: 400px;
+            position: relative;
+        }
+
+        #canvas {
+            position: absolute;
+            display: none;
+        }
+
+        .image {
+            width: 90%;
+            margin-left: 5%;
+            margin-top: 10%;
+            height: 80%;
+            animation: ghost 6s infinite ease-in-out;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .button {
+            background-color: #d63384;
+            color: white;
+            font-family: "Amatic SC", sans-serif;
+            font-size: 2rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            height: 10rem;
+            width: 10rem;
+            font-weight: 600;
+            font-style: normal;
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            transition: 0.5s;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.4);
+        }
+
+        .button:hover {
+            background-color: #ff1493;
+            transform: scale(1.05);
+        }
+
+        .button:active {
+            scale: 0.9;
+        }
+
+        .text {
+            right: 0;
+            position: absolute;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            justify-content: end;
+            font-family: "Amatic SC", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 3rem;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .letter {
+            opacity: 1;
+            animation: floating 3.5s infinite ease-in-out;
+        }
+
+        .letter:nth-child(1) { animation-delay: 0.2s; }
+        .letter:nth-child(2) { animation-delay: 0.4s; }
+        .letter:nth-child(3) { animation-delay: 0.8s; }
+        .letter:nth-child(4) { animation-delay: 1s; }
+        .letter:nth-child(5) { animation-delay: 1.2s; }
+        .letter:nth-child(6) { animation-delay: 1.4s; }
+
+        @keyframes floating {
+            0%, 100% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        @keyframes ghost {
+            0%, 100% {
+                transform: translateY(-10px) rotate(2deg);
+            }
+            50% {
+                transform: translateY(10px) rotate(0deg);
+            }
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #d63384;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-family: "Amatic SC", sans-serif;
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            background-color: #ff1493;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Назад к приложению</a>
+    
+    <div class="wrapper" id="wrapper">
+        <canvas id="canvas"></canvas>
+        <div class="text">
+            <div class="letter">M</div>
+            <div class="letter">e</div>
+            <div class="letter">o</div>
+            <div class="letter">o</div>
+            <div class="letter">o</div>
+            <div class="letter">w</div>
+        </div>
+        <svg class="image" id="image" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 62.5237C4.6 72.9237 1.5 87.1903 0 93.0237C3.5 97.5237 13.5 94.5237 16 96.0237C18.5 97.5237 21 99.0237 25.5 99.5237C30 100.024 39.5 92.0237 50 95.5237C58.4 98.3237 65.8333 97.357 68.5 96.5237C69.5 90.6903 70 77.3237 64 70.5237C56.5 62.0237 49.5 45.5237 47 33.5237C44.5 21.5237 43.5 1.02365 39.5 0.523651C35.5 0.0236511 33.5 7.52365 25 8.52365C16.5 9.52365 16.5 0.523656 15 0.0236556C13.5 -0.476344 11 7.02366 9 15.5237C7 24.0237 5.5 49.5237 5 62.5237Z" fill="url(#paint0_linear_32_9)" stroke="#333" stroke-width="0.5"/>
+            <path d="M18 27.5237C15.2 28.3237 14.5 24.857 14.5 23.0237C14.5 19.5237 16.5 18.5237 19 18.5237C21.5 18.5237 22 21.0237 22 22.5237C22 24.0237 21.5 26.5237 18 27.5237Z" fill="#202020"/>
+            <path d="M30.5 28.0237C28.5 28.0237 27 25.0237 27 23.0237C27 19.2206 29.5 18.5237 32 18.0237C34.5 17.5237 36 19.5237 36 23.0237C36 26.5237 33.0495 28.0237 30.5 28.0237Z" fill="#202020"/>
+            <path d="M19.4999 94.5001C17.8999 92.5001 14.1666 92.0001 12.4999 92.0001C7.99989 91.1783 19.4999 63.5001 16.9999 70.0001C14.4999 76.5001 21.4999 97.0001 19.4999 94.5001Z" fill="url(#paint1_linear_32_9)"/>
+            <path d="M50 93.0001C45.2606 92.0524 40.5 93.5 38 93.0001C43 86 35.5 63.0001 41 70.0001C44.9074 74.9732 52.5 93.5 50 93.0001Z" fill="url(#paint2_linear_32_9)"/>
+            <defs>
+                <linearGradient id="paint0_linear_32_9" x1="34.5556" y1="0" x2="34.5556" y2="99.5462" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#f0f0f0"/>
+                    <stop offset="0.3" stop-color="#e0e0e0"/>
+                    <stop offset="1" stop-color="#b0b0b0"/>
+                </linearGradient>
+                <linearGradient id="paint1_linear_32_9" x1="30.9695" y1="68.69" x2="30.9695" y2="94.7103" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#808080"/>
+                    <stop offset="1" stop-color="#BABABA" stop-opacity="0"/>
+                </linearGradient>
+                <linearGradient id="paint2_linear_32_9" x1="30.9695" y1="68.69" x2="30.9695" y2="94.7103" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#808080"/>
+                    <stop offset="1" stop-color="#BABABA" stop-opacity="0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+    </div>
+    <button class="button" onclick="resetAnimation()">
+        Reset <br> animation
+    </button>
+
+    <script>
+        const wrapper = document.getElementById('wrapper')
+        const image = document.getElementById('image')
+
+        const canvas = document.getElementById('canvas')
+        canvas.width = wrapper.offsetWidth
+        canvas.height = wrapper.offsetHeight
+        const ctx = canvas.getContext('2d')
+
+        const cx = -100;
+        const cy = -100;
+
+        let radius = 0;
+        const maxRadius = Math.sqrt(canvas.width**2 + canvas.height**2) + 100;
+
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        // Создаем изображение кошки программно
+        img.onload = function() {
+            draw();
+        };
+        
+        // Создаем canvas для кошки
+        const catCanvas = document.createElement('canvas');
+        catCanvas.width = 60;
+        catCanvas.height = 60;
+        const catCtx = catCanvas.getContext('2d');
+        
+        // Рисуем кошку
+        catCtx.fillStyle = '#333';
+        catCtx.beginPath();
+        // Тело кошки
+        catCtx.ellipse(30, 40, 15, 20, 0, 0, Math.PI * 2);
+        catCtx.fill();
+        
+        // Голова кошки
+        catCtx.beginPath();
+        catCtx.arc(30, 20, 12, 0, Math.PI * 2);
+        catCtx.fill();
+        
+        // Ушки
+        catCtx.beginPath();
+        catCtx.moveTo(22, 12);
+        catCtx.lineTo(18, 5);
+        catCtx.lineTo(26, 8);
+        catCtx.closePath();
+        catCtx.fill();
+        
+        catCtx.beginPath();
+        catCtx.moveTo(38, 12);
+        catCtx.lineTo(42, 5);
+        catCtx.lineTo(34, 8);
+        catCtx.closePath();
+        catCtx.fill();
+        
+        // Глазки
+        catCtx.fillStyle = 'white';
+        catCtx.beginPath();
+        catCtx.arc(26, 18, 3, 0, Math.PI * 2);
+        catCtx.fill();
+        catCtx.beginPath();
+        catCtx.arc(34, 18, 3, 0, Math.PI * 2);
+        catCtx.fill();
+        
+        catCtx.fillStyle = '#333';
+        catCtx.beginPath();
+        catCtx.arc(26, 18, 1.5, 0, Math.PI * 2);
+        catCtx.fill();
+        catCtx.beginPath();
+        catCtx.arc(34, 18, 1.5, 0, Math.PI * 2);
+        catCtx.fill();
+        
+        // Носик
+        catCtx.fillStyle = 'pink';
+        catCtx.beginPath();
+        catCtx.arc(30, 22, 2, 0, Math.PI * 2);
+        catCtx.fill();
+        
+        // Хвостик
+        catCtx.fillStyle = '#333';
+        catCtx.beginPath();
+        catCtx.ellipse(45, 35, 8, 3, Math.PI/4, 0, Math.PI * 2);
+        catCtx.fill();
+        
+        // Преобразуем canvas в изображение
+        img.src = catCanvas.toDataURL();
+
+        img.onload = function() {
+            draw();
+        };
+
+        let animationId = null
+
+        function resetAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId)
+                animationId = null
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            radius = 0
+            draw()
+        }
+
+        function draw() {
+            for (let i = 0; i < 90; i++) { 
+                const angle = i * Math.PI / 90
+                const r = radius;
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                
+                const scale = Math.random() * 2 + 0.5;
+                const width = img.width * scale;
+                const height = img.height * scale;
+                const rotation = Math.random() * 2 * Math.PI;
+
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(rotation);
+                
+                // Делаем кошек более заметными
+                ctx.globalAlpha = Math.random() * 0.8 + 0.4;
+                
+                // Добавляем тень для лучшей видимости
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = 3;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+                
+                ctx.drawImage(img, -width / 2, -height / 2, width, height);
+
+                ctx.restore();
+            }
+
+            let maskDataUrl = canvas.toDataURL('image/png')
+            wrapper.style.maskImage = `url(${maskDataUrl})`
+            radius += 3;
+            
+            if (radius < maxRadius) {
+                animationId = requestAnimationFrame(draw);
+            }
+        }
+    </script>
+</body>
+</html>
