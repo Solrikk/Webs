@@ -1,0 +1,276 @@
+
+{% extends "base.html" %}
+
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block content %}
+<h2>Профиль: {{ username }}</h2>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="profile-content">
+    <div class="task-section">
+        <h3>Мои задачи</h3>
+        
+        <form method="POST" action="{{ url_for('add_task') }}" class="add-task-form">
+            <div class="task-input-group">
+                <input type="text" name="task" placeholder="Введите новую задачу..." required class="task-input">
+                <button type="submit" class="add-btn">Добавить</button>
+            </div>
+        </form>
+        
+        <div class="tasks-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                <div class="task-item {% if task.completed %}completed{% endif %}">
+                    <div class="task-content">
+                        <span class="task-text">{{ task.text }}</span>
+                        <span class="task-status">{{ 'Выполнено' if task.completed else 'В процессе' }}</span>
+                    </div>
+                    <div class="task-actions">
+                        <a href="{{ url_for('toggle_task', task_id=task.id) }}" class="toggle-btn">
+                            {% if task.completed %}
+                                Отменить
+                            {% else %}
+                                Выполнить
+                            {% endif %}
+                        </a>
+                        <a href="{{ url_for('delete_task', task_id=task.id) }}" class="delete-btn" 
+                           onclick="return confirm('Удалить задачу?')">Удалить</a>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-tasks">
+                    <p>У вас пока нет задач. Добавьте первую задачу выше.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="profile-stats">
+        <div class="stat-card">
+            <h4>Статистика</h4>
+            <p>Всего задач: {{ tasks|length }}</p>
+            <p>Выполнено: {{ tasks|selectattr('completed')|list|length }}</p>
+            <p>Осталось: {{ tasks|rejectattr('completed')|list|length }}</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-content {
+        margin-top: 20px;
+    }
+    
+    .task-section {
+        margin-bottom: 30px;
+    }
+    
+    .task-section h3 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+        font-weight: 600;
+        border-bottom: 2px solid #e1e8ed;
+        padding-bottom: 10px;
+    }
+    
+    .add-task-form {
+        margin-bottom: 25px;
+    }
+    
+    .task-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .task-input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #e1e8ed;
+        border-radius: 6px;
+        background: #ffffff;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .task-input:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+    
+    .add-btn {
+        padding: 12px 24px;
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+    }
+    
+    .add-btn:hover {
+        background: #2980b9;
+    }
+    
+    .tasks-list {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    
+    .task-item {
+        background: #ffffff;
+        border: 1px solid #e1e8ed;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+    
+    .task-item:hover {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border-color: #3498db;
+    }
+    
+    .task-item.completed {
+        background: #f8f9fa;
+        border-color: #27ae60;
+    }
+    
+    .task-item.completed .task-text {
+        text-decoration: line-through;
+        color: #7f8c8d;
+    }
+    
+    .task-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1;
+    }
+    
+    .task-text {
+        color: #2c3e50;
+        font-weight: 400;
+        flex: 1;
+    }
+    
+    .task-status {
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-weight: 500;
+        background: #ecf0f1;
+        color: #7f8c8d;
+    }
+    
+    .task-item.completed .task-status {
+        background: #d5f4e6;
+        color: #27ae60;
+    }
+    
+    .task-actions {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .toggle-btn, .delete-btn {
+        padding: 6px 14px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 13px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 500;
+    }
+    
+    .toggle-btn {
+        background: #3498db;
+        color: white;
+    }
+    
+    .toggle-btn:hover {
+        background: #2980b9;
+    }
+    
+    .delete-btn {
+        background: #e74c3c;
+        color: white;
+    }
+    
+    .delete-btn:hover {
+        background: #c0392b;
+    }
+    
+    .no-tasks {
+        text-align: center;
+        padding: 40px 20px;
+        color: #7f8c8d;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e1e8ed;
+    }
+    
+    .profile-stats {
+        margin: 30px 0;
+    }
+    
+    .stat-card {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #e1e8ed;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+    
+    .stat-card h4 {
+        color: #7f8c8d;
+        margin-bottom: 15px;
+        font-size: 0.9em;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .stat-card p {
+        margin: 8px 0;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 600px) {
+        .task-input-group {
+            flex-direction: column;
+        }
+        
+        .task-item {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        
+        .task-actions {
+            align-self: flex-end;
+        }
+    }
+</style>
+{% endblock %}

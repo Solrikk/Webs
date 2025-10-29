@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<h2>Вход в систему</h2>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    
+    <div class="form-group">
+        {{ form.username.label }}
+        {{ form.username(class="form-control") }}
+        {% if form.username.errors %}
+            {% for error in form.username.errors %}
+                <div class="flash-message">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class="form-control") }}
+        {% if form.password.errors %}
+            {% for error in form.password.errors %}
+                <div class="flash-message">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+    {{ form.submit(class="submit-btn") }}
+</form>
+
+<div class="links">
+    <a href="{{ url_for('register') }}">Зарегистрироваться</a>
+</div>
+{% endblock %}

@@ -1,0 +1,261 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Вход администратора{% endblock %}
+
+{% block styles %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        margin: 0;
+    }
+    
+    .admin-login-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+    
+    .admin-login-box {
+        background: white;
+        padding: 50px 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 450px;
+        width: 100%;
+        animation: slideUp 0.5s ease;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .admin-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .admin-icon-wrapper {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
+    .admin-icon {
+        font-size: 40px;
+    }
+    
+    .admin-header h2 {
+        color: #2c3e50;
+        font-size: 28px;
+        margin: 0 0 10px 0;
+        font-weight: 700;
+    }
+    
+    .admin-subtitle {
+        color: #7f8c8d;
+        font-size: 14px;
+        margin: 0;
+    }
+    
+    .admin-form-group {
+        margin-bottom: 25px;
+    }
+    
+    .admin-form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .input-wrapper {
+        position: relative;
+    }
+    
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+        font-size: 18px;
+    }
+    
+    .admin-form-group input {
+        width: 100%;
+        padding: 14px 16px 14px 45px;
+        border: 2px solid #e1e8ed;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+    
+    .admin-form-group input:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+    
+    .admin-submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .admin-submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
+    .admin-submit-btn:active {
+        transform: translateY(0);
+    }
+    
+    .admin-back-link {
+        text-align: center;
+        margin-top: 25px;
+    }
+    
+    .admin-back-link a {
+        color: #667eea;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .admin-back-link a:hover {
+        color: #764ba2;
+        gap: 8px;
+    }
+    
+    .flash-messages {
+        margin-bottom: 25px;
+    }
+    
+    .flash-message {
+        padding: 14px 18px;
+        border-radius: 10px;
+        background: #fee;
+        color: #c33;
+        border-left: 4px solid #c33;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: shake 0.5s ease;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    .security-notice {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 13px;
+        color: #7f8c8d;
+        border: 1px dashed #e1e8ed;
+    }
+    
+    @media (max-width: 500px) {
+        .admin-login-box {
+            padding: 40px 25px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-login-wrapper">
+    <div class="admin-login-box">
+        <div class="admin-header">
+            <div class="admin-icon-wrapper">
+                <span class="admin-icon">🛡️</span>
+            </div>
+            <h2>Админ-панель</h2>
+            <p class="admin-subtitle">Доступ только для администраторов системы</p>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">
+                            <span>⚠️</span>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('admin_panel') }}">
+            <div class="admin-form-group">
+                <label for="username">Логин администратора</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" name="username" required autocomplete="username" placeholder="Введите логин">
+                </div>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="password">Пароль</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Введите пароль">
+                </div>
+            </div>
+
+            <button type="submit" class="admin-submit-btn">Войти в систему</button>
+        </form>
+
+        <div class="security-notice">
+            🔐 Защищенное соединение
+        </div>
+
+        <div class="admin-back-link">
+            <a href="{{ url_for('index') }}">
+                <span>←</span>
+                <span>Вернуться на главную</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
